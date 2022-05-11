@@ -20,9 +20,11 @@ const usuarioSchema = Schema({
     },
     role: {
         type: String,
+        required: [true, 'El role es obligatorio'],
+        enum: ["ADMIN_ROLE", "USER_ROLE"]
     },
     fecha_alta: {
-        type: Date()
+        type: Date
     }
 })
 
