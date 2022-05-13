@@ -10,11 +10,6 @@ const getUsers = (req = request, res = response) => {
 }
 
 const createUser = async(req = request, res = response) => {
-
-    const errors = validationResult(req)
-    if(!errors.isEmpty()){
-        return res.status(400).json(errors)
-    }
     
     const {nombre, email, password, role} = req.body
     const usuarioNuevo = new Usuario({
@@ -24,13 +19,7 @@ const createUser = async(req = request, res = response) => {
         role,
         fecha_alta: new Date().toLocaleString()
     })
-    //validar si existe correo
-    const usuarioExiste = await  Usuario.findOne({email})
-    if(usuarioExiste){
-        return res.status(400).json({
-            msg: 'El correo ya se encuentra registrado en la Base de Datos'
-        })
-    }
+   
     //encriptar contraseña
     const salt = bcrypt.genSaltSync()
     usuarioNuevo.password = bcrypt.hashSync(password, salt)
