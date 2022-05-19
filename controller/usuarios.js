@@ -38,8 +38,16 @@ const createUser = async(req = request, res = response) => {
     }
 }
 
-const updateUser = (req = request, res = response) => {
-    res.send('Actualizar Usuarios')
+const updateUser = async(req = request, res = response) => {
+    const {id} = req.params
+    const {password, estado, email, ...data} = req.body
+
+    const usuario = await Usuario.findByIdAndUpdate(id, data, {new: true})
+
+    res.status(200).json({
+        msg: 'Usuario Actualizado con éxito.',
+        usuario
+    })
 }
 
 const deleteUser = (req = request, res = response) => {
