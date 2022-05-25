@@ -50,6 +50,23 @@ const updateUser = async(req = request, res = response) => {
     })
 }
 
+const updatePass = async (req = request, res = response) => {
+    const {id} = req.params
+    let {password} = req.body
+
+    console.log(id);
+
+    const salt = bcrypt.genSaltSync()
+    password = bcrypt.hashSync(password, salt)
+
+    const usuario = await Usuario.findByIdAndUpdate(id, {password})
+ 
+    res.status(200).json({
+        msg: 'Cambio de contraseña exitoso!',
+        usuario
+    })
+}
+
 const deleteUser = (req = request, res = response) => {
     res.send('Eliminar Usuarios')
 }
@@ -58,5 +75,6 @@ module.exports = {
     getUsers,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    updatePass
 }

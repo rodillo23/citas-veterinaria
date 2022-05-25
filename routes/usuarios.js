@@ -2,7 +2,7 @@ const {Router} = require('express')
 const { check } = require('express-validator')
 const router = Router()
 
-const { getUsers, createUser, updateUser, deleteUser } = require('../controller/usuarios')
+const { getUsers, createUser, updateUser, deleteUser, updatePass } = require('../controller/usuarios')
 const { validarRole, existeEmail, existeUsuarioPorId } = require('../helpers/db-validators')
 const { validarCampos } = require('../middlewares/validar-campos')
 
@@ -24,6 +24,12 @@ router.put('/:id', [
     check('role').custom(validarRole),
     validarCampos
 ],updateUser)
+
+router.put('/changePass/:id', [
+    check('id').custom(existeUsuarioPorId),
+    check('password', 'El password debe tener como minimo 6 caracteres.').isLength({min:6}),
+    validarCampos
+],updatePass)
 
 router.delete('/', deleteUser)
 
