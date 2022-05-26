@@ -1,11 +1,21 @@
 const {request, response} = require('express')
 const bcrypt = require('bcrypt')
 const Usuario = require('../model/usuario')
-const { validationResult } = require('express-validator')
 
-const getUsers = (req = request, res = response) => {
+const getUsers = async(req = request, res = response) => {
+    const {limite=10, desde=0} = req.query
+    
+    //const count = await Usuario.countDocuments()
+    //const usuarios = await Usuario.find().limit(limite).skip(desde)
+
+    const [count, usuarios] = await Promise.all([
+        Usuario.countDocuments({estado: true}),
+        Usuario.find({estado:true}).limit(limite).skip(desde)
+    ])
+    
     res.status(200).json({
-        msg: 'Lista de Usuarios'
+        total: count,
+        usuarios
     })
 }
 
