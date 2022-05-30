@@ -5,9 +5,6 @@ const Usuario = require('../model/usuario')
 const getUsers = async(req = request, res = response) => {
     const {limite=10, desde=0} = req.query
     
-    //const count = await Usuario.countDocuments()
-    //const usuarios = await Usuario.find().limit(limite).skip(desde)
-
     const [count, usuarios] = await Promise.all([
         Usuario.countDocuments({estado: true}),
         Usuario.find({estado:true}).limit(limite).skip(desde)
@@ -77,8 +74,14 @@ const updatePass = async (req = request, res = response) => {
     })
 }
 
-const deleteUser = (req = request, res = response) => {
-    res.send('Eliminar Usuarios')
+const deleteUser = async(req = request, res = response) => {
+    const {id} = req.params
+
+    const usuario = await Usuario.findByIdAndUpdate(id, {estado:false}, {new:true})
+    res.json({
+        msg: 'Usuario eliminado con éxito',
+        usuario
+    })
 }
 
 module.exports = {

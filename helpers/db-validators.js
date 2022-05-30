@@ -25,8 +25,16 @@ const existeUsuarioPorId = async (id)=>{
     }
 }
 
+const eliminadoAnteriormente = async(id)=> {
+    const usuario = await Usuario.findById(id)
+    if(usuario && !usuario.estado){
+        throw new Error('El usuario ya fue eliminado anteriormente')
+    }
+}
+
 module.exports = {
     validarRole, 
     existeEmail,
-    existeUsuarioPorId
+    existeUsuarioPorId,
+    eliminadoAnteriormente
 }
