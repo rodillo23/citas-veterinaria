@@ -26,6 +26,8 @@ router.put('/:id', [
 ],updateUser)
 
 router.put('/changePass/:id', [
+    check('id', 'No es in Id Válido').isMongoId(),
+    check('id').custom(eliminadoAnteriormente),
     check('id').custom(existeUsuarioPorId),
     check('password', 'El password debe tener como minimo 6 caracteres.').isLength({min:6}),
     validarCampos
