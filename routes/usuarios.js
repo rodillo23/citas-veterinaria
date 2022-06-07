@@ -5,6 +5,7 @@ const router = Router()
 const { getUsers, createUser, updateUser, deleteUser, updatePass } = require('../controller/usuarios')
 const { validarRole, existeEmail, existeUsuarioPorId, eliminadoAnteriormente } = require('../helpers/db-validators')
 const { validarCampos } = require('../middlewares/validar-campos')
+const validarJWT = require('../middlewares/validar-JWT')
 
 
 router.get('/', getUsers)
@@ -34,9 +35,10 @@ router.put('/changePass/:id', [
 ],updatePass)
 
 router.delete('/:id', [
+    validarJWT,
     check('id', 'No es un Id Válido').isMongoId(),
     check('id').custom(existeUsuarioPorId),
-    check('id').custom(eliminadoAnteriormente),
+    //check('id').custom(eliminadoAnteriormente),
     validarCampos
 ],deleteUser)
 

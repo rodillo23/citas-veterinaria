@@ -20,7 +20,6 @@ const existeEmail = async (email)=>{
 
 const existeUsuarioPorId = async (id)=>{
     const usuario = await Usuario.findById(id)
-    console.log(usuario);
     if(!usuario){
         throw new Error('El usuario no existe en la Base de Datos')
     }

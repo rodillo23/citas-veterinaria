@@ -76,11 +76,13 @@ const updatePass = async (req = request, res = response) => {
 
 const deleteUser = async(req = request, res = response) => {
     const {id} = req.params
+    const usuarioAuth = req.usuarioAuth
 
     const usuario = await Usuario.findByIdAndUpdate(id, {estado:false}, {new:true})
     res.json({
         msg: 'Usuario eliminado con éxito',
-        usuario
+        usuario,
+        usuarioAuth
     })
 }
 
